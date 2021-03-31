@@ -1,6 +1,7 @@
 public class Human {
 
-    private int status = 0; //0:none | 1: infected
+    private int status = 0; //0:none | 1: infected | 2: immune
+    private int daysInfected = 0;
     private final Location home;
     private Location location;
 
@@ -16,5 +17,11 @@ public class Human {
     //setter methods
     public void setStatus(int status){ this.status = status; }
     public void setLocation(Location location){ this.location = location; }
+    public void updateDaysInfected(){
+        if (status == 1){
+            if (daysInfected == 7){ status = 2; }
+            daysInfected += 1;
+        }
+    }
 
 }

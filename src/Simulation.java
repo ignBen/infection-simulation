@@ -47,6 +47,7 @@ public class Simulation {
         }
         for (Human human : humans){
             moveHumanHome(human);
+            human.updateDaysInfected();
         }
     }
 
@@ -67,23 +68,23 @@ public class Simulation {
         human.setLocation(human.getHome());
     }
     public void updateInfections(double rate){
-        for (Location location : locations){
-            ArrayList<Human> humans = location.getHumans();
+        for (Location location : locations){ // in given location
+            ArrayList<Human> humans = location.getHumans(); // all humans
 
-            ArrayList<Human> notInfectedHumans = new ArrayList<Human>();
-            int infected_count = 0;
+            ArrayList<Human> notInfectedHumans = new ArrayList<Human>(); // susceptible humans
+            int infected_count = 0; // number of infected humans
 
             for (Human human : humans){
                 if (human.getStatus() == 0){
                     notInfectedHumans.add(human);
-                } else {
+                } else if (human.getStatus() == 1) {
                     infected_count += 1;
                 }
             }
 
-            for (int i=0; i<infected_count; i++){
-                for (Human human : notInfectedHumans){
-                    if (Math.random() < rate){
+            for (int i=0; i<infected_count; i++){ // for the number of infecteds in that location
+                for (Human human : notInfectedHumans){ // for each non infected
+                    if (Math.random() <= rate){ // random infected chance if
                         human.setStatus(1);
                     }
                 }
@@ -95,6 +96,15 @@ public class Simulation {
         int count = 0;
         for (Human human : humans){
             if (human.getStatus() == 1){
+                count += 1;
+            }
+        }
+        return count;
+    }
+    public int getImmuneCount(){
+        int count = 0;
+        for (Human human : humans){
+            if (human.getStatus() == 2){
                 count += 1;
             }
         }
